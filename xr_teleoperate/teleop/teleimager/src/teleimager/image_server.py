@@ -11,26 +11,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import logging_mp
-logging_mp.basicConfig(level=logging_mp.INFO)
-logger_mp = logging_mp.getLogger(__name__)
-logger_mp = logging_mp.getLogger(__name__)
 import os
 import argparse
 import glob
 import cv2
 import numpy as np
-# uvc will be imported when needed
 import yaml
 import time
 import threading
 import signal
-import logging_mp
-logging_mp.basicConfig(level=logging_mp.INFO)
-logger_mp = logging_mp.getLogger(__name__)
 import functools
 import subprocess
 import platform
+import logging_mp
+logging_mp.basicConfig(level=logging_mp.INFO)
+logger_mp = logging_mp.getLogger(__name__)
 from .image_client import TripleRingBuffer, ZMQ_PublisherManager, ZMQ_Responser
 # webrtc dependencies
 import asyncio

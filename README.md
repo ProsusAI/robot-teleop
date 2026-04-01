@@ -162,29 +162,7 @@ cd ~/robot-teleop/teleimager
 
 > **Critical**: The system `pip` at `/home/unitree/.local/bin/pip` installs to Python 3.8. Always use the full path `/home/unitree/miniconda3/envs/teleimager/bin/pip`.
 
-#### 2.3 Patch teleimager logging API
-
-The teleimager code uses an older `logging_mp` API. Apply these fixes:
-
-```bash
-cd ~/robot-teleop/teleimager
-
-git checkout src/teleimager/image_server.py
-git checkout src/teleimager/image_client.py
-
-# Fix image_client.py: get_logger → getLogger, remove level kwarg
-sed -i 's/logging_mp.get_logger(__name__, level=logging_mp.INFO)/logging_mp.getLogger(__name__)/g' src/teleimager/image_client.py
-
-# Fix image_server.py: insert basicConfig BEFORE the image_client import (line 27)
-sed -i '26a import logging_mp\nlogging_mp.basicConfig(level=logging_mp.INFO)\nlogger_mp = logging_mp.getLogger(__name__)' src/teleimager/image_server.py
-
-# Remove the old logging_mp lines (now around lines 45-47)
-sed -i '45,47d' src/teleimager/image_server.py
-```
-
-> `basicConfig()` must be called before any `getLogger()`. The original code imports `image_client` (which calls `getLogger`) before calling `basicConfig`. The fix reorders them.
-
-#### 2.4 Camera permissions and certificates
+#### 2.3 Camera permissions and certificates
 
 ```bash
 cd ~/robot-teleop/teleimager
@@ -196,11 +174,11 @@ mkdir -p ~/.config/xr_teleoperate/
 cp cert.pem key.pem ~/.config/xr_teleoperate/
 ```
 
-#### 2.5 Configure camera
+#### 2.4 Configure camera
 
-Discover cameras with `python -m teleimager.image_server --cf`. The G1's Intel RealSense D430i uses `/dev/video2` (480x640 RGB).
+A working config is already included at `teleimager/cam_config_server.yaml`. To discover other cameras, run `python -m teleimager.image_server --cf`. The G1's Intel RealSense D430i uses `/dev/video2` (480x640 RGB).
 
-Save this as `~/robot-teleop/teleimager/cam_config_server.yaml`:
+Default config (`~/robot-teleop/teleimager/cam_config_server.yaml`):
 
 ```yaml
 head_camera:
@@ -433,7 +411,6 @@ The G1 weighs **35 kg** with **120 N·m knee torque** and moves at **2+ m/s**.
 
 | Issue                                         | Fix                                                                     |
 | --------------------------------------------- | ----------------------------------------------------------------------- |
-| teleimager logging patches lost on `git pull` | Re-apply patches from section 2.3                                       |
 | Camera serial number matching fails           | Use `video_id` only; set `serial_number: null`                          |
 | System pip vs conda pip                       | Always use `/home/unitree/miniconda3/envs/<env>/bin/pip`                |
 | Camera not found after reboot                 | Unplug and replug the RealSense USB cable; verify with `ls /dev/video`* |
