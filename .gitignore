@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.egg
+dist/
+build/
+*.pem
+.env
+*.so
+.venv/
+venv/
+recordings/
+data/
+*.bag
