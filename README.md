@@ -4,7 +4,7 @@
 
 Full-body teleoperation of a **Unitree G1 (29-DoF)** humanoid robot using a **Meta Quest 3** VR headset. Everything runs directly on the G1's onboard **Jetson Orin NX** (PC2) — no external host PC needed.
 
-Built on Unitree's `[xr_teleoperate](https://github.com/unitreerobotics/xr_teleoperate)` v1.5 (Open-TeleVision framework, CoRL 2024). Uses browser-based WebXR — just open a URL on the Quest 3.
+Built on Unitree's [xr_teleoperate](https://github.com/unitreerobotics/xr_teleoperate) v1.5 (Open-TeleVision framework, CoRL 2024). Uses browser-based WebXR — just open a URL on the Quest 3.
 
 ## Repo Structure
 
@@ -93,7 +93,7 @@ conda activate tv
 
 ```bash
 cd ~
-git clone <this-repo-url> robot-teleop
+git clone https://github.com/marinmarian/robot-teleop.git
 cd robot-teleop
 ```
 
@@ -104,14 +104,15 @@ Everything is included — no submodules to init, no extra repos to clone.
 ```bash
 cd ~/robot-teleop
 
+# Use the conda env's pip, not system pip
 # Unitree SDK (includes MotionSwitcherClient, LocoClient, G1 modules)
-pip install -e unitree_sdk2_python/
+/home/unitree/miniconda3/envs/tv/bin/pip install -e unitree_sdk2_python/
 
 # Teleimager client (no-deps — server deps installed separately in Part 2)
-pip install -e xr_teleoperate/teleop/teleimager/ --no-deps
+/home/unitree/miniconda3/envs/tv/bin/pip install -e xr_teleoperate/teleop/teleimager/ --no-deps
 
 # Televuer (WebXR interface)
-pip install -e xr_teleoperate/teleop/televuer/
+/home/unitree/miniconda3/envs/tv/bin/pip install -e xr_teleoperate/teleop/televuer/
 ```
 
 #### 1.5 Install remaining dependencies
@@ -409,13 +410,13 @@ The G1 weighs **35 kg** with **120 N·m knee torque** and moves at **2+ m/s**.
 ## Known Issues
 
 
-| Issue                                         | Fix                                                                     |
-| --------------------------------------------- | ----------------------------------------------------------------------- |
-| Camera serial number matching fails           | Use `video_id` only; set `serial_number: null`                          |
-| System pip vs conda pip                       | Always use `/home/unitree/miniconda3/envs/<env>/bin/pip`                |
-| Camera not found after reboot                 | Unplug and replug the RealSense USB cable; verify with `ls /dev/video`* |
-| numpy gets upgraded by pip                    | Run `pip install numpy==1.26.4` after every package installation        |
-| Wrist cameras required in config              | Must be present (even disabled) or `image_client.py` throws KeyError    |
+| Issue                               | Fix                                                                     |
+| ----------------------------------- | ----------------------------------------------------------------------- |
+| Camera serial number matching fails | Use `video_id` only; set `serial_number: null`                          |
+| System pip vs conda pip             | Always use `/home/unitree/miniconda3/envs/<env>/bin/pip`                |
+| Camera not found after reboot       | Unplug and replug the RealSense USB cable; verify with `ls /dev/video`* |
+| numpy gets upgraded by pip          | Run `pip install numpy==1.26.4` after every package installation        |
+| Wrist cameras required in config    | Must be present (even disabled) or `image_client.py` throws KeyError    |
 
 
 ---
