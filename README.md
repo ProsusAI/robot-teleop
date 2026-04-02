@@ -1,6 +1,6 @@
 # G1 + Quest 3 Teleoperation
 
-> **Status: Fully tested and working** — Full-body teleoperation confirmed on G1 (29-DoF) via Quest 3, running entirely on the G1's Jetson Orin NX. Inspire hands integration TBD.
+> **Status: Fully tested and working** — Full-body teleoperation confirmed on G1 (29-DoF) via Quest 3, running entirely on the G1's Jetson Orin NX. Inspire hands supported via direct Modbus TCP.
 
 Full-body teleoperation of a **Unitree G1 (29-DoF)** humanoid robot using a **Meta Quest 3** VR headset. Everything runs directly on the G1's onboard **Jetson Orin NX** (PC2) — no external host PC needed.
 
@@ -125,6 +125,7 @@ pip install 'rerun-sdk==0.21.0'
 pip install sshkeyboard==2.3.1
 pip install matplotlib==3.7.5
 pip install git+https://github.com/unitreerobotics/logging-mp.git
+pip install pymodbus       # Required for Inspire hands (Modbus TCP driver)
 pip install numpy==1.26.4  # ALWAYS re-pin after installing anything
 ```
 
@@ -316,7 +317,7 @@ python teleop_hand_and_arm.py --arm=G1_29 --motion --input-mode=controller
 
 | Flag               | Hand                                       |
 | ------------------ | ------------------------------------------ |
-| `--ee=inspire_ftp` | Inspire hands, finger tip position control |
+| `--ee=inspire_ftp` | Inspire hands, finger tip position (Modbus TCP, no SDK needed) |
 | `--ee=inspire_dfx` | Inspire hands, direct flex control         |
 | `--ee=dex3`        | Dex3-1 dexterous hand                      |
 | `--ee=dex1`        | Dex1-1 gripper                             |
@@ -417,6 +418,7 @@ The G1 weighs **35 kg** with **120 N·m knee torque** and moves at **2+ m/s**.
 | Camera not found after reboot       | Unplug and replug the RealSense USB cable; verify with `ls /dev/video`* |
 | numpy gets upgraded by pip          | Run `pip install numpy==1.26.4` after every package installation        |
 | Wrist cameras required in config    | Must be present (even disabled) or `image_client.py` throws KeyError    |
+| Inspire hand IP override            | Set `INSPIRE_LEFT_IP` / `INSPIRE_RIGHT_IP` env vars (defaults: `192.168.123.210` / `.211`) |
 
 
 ---
