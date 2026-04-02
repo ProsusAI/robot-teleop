@@ -93,7 +93,7 @@ conda activate tv
 
 ```bash
 cd ~
-git clone https://github.com/marinmarian/robot-teleop.git
+git clone https://github.com/ProsusAI/robot-teleop.git
 cd robot-teleop
 ```
 
