@@ -185,7 +185,7 @@ if __name__ == '__main__':
             dual_hand_action_array = Array('d', 12, lock = False)  # [output] current left, right hand action(12) data.
             hand_ctrl = Inspire_Controller_DFX(left_hand_pos_array, right_hand_pos_array, dual_hand_data_lock, dual_hand_state_array, dual_hand_action_array, simulation_mode=args.sim)
         elif args.ee == "inspire_ftp":
-            from teleop.robot_control.robot_hand_inspire import Inspire_Controller_FTP
+            from teleop.robot_control.robot_hand_inspire_modbus import Inspire_Controller_FTP
             left_hand_pos_array = Array('d', 75, lock = True)      # [input]
             right_hand_pos_array = Array('d', 75, lock = True)     # [input]
             dual_hand_data_lock = Lock()
